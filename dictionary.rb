@@ -1,1 +1,0 @@
-dictionary = ["machiavellianism", "prestidigitation", "plenipotentiary", "buckminsterfullerene", "quattuordecillion", "tintinnabulation", "abstentious", "corpulent", "luminous", "lackadaisical", "impavid", "agathist", "skulduggery", "belgard", "collocate", "duende", "enology", "limerance", "fard", "gammer", "paroxysm", "hypergamy", "jejunator", "draconian", "pulchritude"]

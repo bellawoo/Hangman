@@ -11,13 +11,13 @@ class GameTest < MiniTest::Test
 	def test_game_is_over_after_you_win
 		n = HangTheHooman.new
 		result = n.check_letter n.answer
-		assert_equal result, :correct!
+		assert_equal result, :yup!
 	end
 
 	def test_game_can_check_wrong_guess
 		m = HangTheHooman.new
 		result = m.check_letter(answer)
-		assert_equal result, :wrong!
+		assert_equal result, :nope!
 		
 	end
 end

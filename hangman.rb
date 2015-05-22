@@ -1,38 +1,46 @@
 require 'pry'
-require '/.dictionary.rb'
-require '/.player.rb'
+require "./player.rb"
 
 class HangTheHooman
-	attr_reader :answer
+	attr_reader :answer, :guess
 
 	def initialize
-		# Select a random word from the Dictionary array
+		dictionary = File.read("dictionary.txt").split(",")
 		@answer = dictionary.sample
-		@right_guess = " "
+		@letters = answer.chars.to_a
 		@user_has_won = false
 		@tries = answer.length * 2
-		puts answer.each do |x|
-			print "_"
-		end
-		@guess = gets.chomp.downcase
 	end
+
+	# def board word, guessed_letters
+	# 	placeholder = " "
+	# 	answer.chars { |chars| placeholder += (guessed_letters.include? char)? char : "_" }
+	# end
 
 	# Transform the answer into an array of letters
-	def letters_in_word
-		letters = answer.chars.to_a
-	end
+	# def letters_in_word
+	# 	letters = answer.chars.to_a
+	# end
 
 	# Check to see if the letter is in the array
-	# If the letter is not in the word, 
 	def check_letter guess
-		until letters.include(guess)
+		until @letters.include?(guess)
 			@tries -= 1
-			return :yup!
+			return :nope!
 			puts "#{guess} isn't in the word I'm thinking of. Try again."
 		end
 
-		if letters.include?(guess)
+		if @letters.include?(guess)
 			@tries -= 1
+			return :yup!			# @word.split(//).map { |letter| @used_letters[letter] ? letter : "_" }.join
+			@letters.map { |letter| @used_letters[letter] ? letter : "_" }.join
+			puts "#{guess} is a letter in the word I'm thinking of."
+			# letters.each do |letter|
+			# 	if ...
+			# 		print letter
+			# 	else
+			# 		print "_"
+			# end
 		end
 	end
 
