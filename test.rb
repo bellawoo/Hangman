@@ -18,6 +18,5 @@ class GameTest < MiniTest::Test
 		m = HangTheHooman.new
 		result = m.check_letter(answer)
 		assert_equal result, :nope!
-		
 	end
 end
