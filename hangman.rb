@@ -1,64 +1,68 @@
-require 'pry'
-require "./player.rb"
-
 class HangTheHooman
-	attr_reader :answer, :guess
+	attr_reader :answer, :guess, :tries, :board
 
 	def initialize
-		dictionary = File.read("dictionary.txt").split(",")
-		@answer = dictionary.sample
-		@letters = answer.chars.to_a
+		puts "Let's play Hangman.\nTry guessing the word I'm thinking of."
+		dictionary = File.read("dictionary.txt").split(", ")
 		@user_has_won = false
-		@tries = answer.length * 2
+		@answer = dictionary.sample
+		@letters = @answer.chars
+		@board = []
+		@letters.each do |l|
+			@board.push "_"
+		end
+		@tries = @letters.length * 2
 	end
 
-	# def board word, guessed_letters
-	# 	placeholder = " "
-	# 	answer.chars { |chars| placeholder += (guessed_letters.include? char)? char : "_" }
-	# end
-
-	# Transform the answer into an array of letters
-	# def letters_in_word
-	# 	letters = answer.chars.to_a
-	# end
-
-	# Check to see if the letter is in the array
 	def check_letter guess
-		until @letters.include?(guess)
-			@tries -= 1
-			return :nope!
-			puts "#{guess} isn't in the word I'm thinking of. Try again."
+		match = false
+		index = 0
+
+		@letters.each do |l|
+			if l == guess
+				match = true
+				@board[index] = l
+			end
+			index += 1
 		end
 
-		if @letters.include?(guess)
-			@tries -= 1
-			return :yup!			# @word.split(//).map { |letter| @used_letters[letter] ? letter : "_" }.join
-			@letters.map { |letter| @used_letters[letter] ? letter : "_" }.join
+		if match
 			puts "#{guess} is a letter in the word I'm thinking of."
-			# letters.each do |letter|
-			# 	if ...
-			# 		print letter
-			# 	else
-			# 		print "_"
-			# end
+			else
+			puts "#{guess} isn't in the word I'm thinking of. Try again."
+			@tries -= 1
 		end
 	end
 
-# Game is over if human player has won or lost
+	def won?
+		@board.join("") == @answer
+	end
+
+	def lost?
+		@tries == 0
+	end
+
 	def over?
 		won? || lost?
 	end
+end
 
-# Human wins when this is true
-	def won?
-		@user_has_won
+game = HangTheHooman.new
+
+	# Controls asking human player to keep guessing
+	until game.over?
+		puts game.board
+		puts "Pick a letter >"
+		guess = gets.chomp
+
+		game.check_letter guess
+
+		puts "You have #{game.tries} tries left."
 	end
 
-# Human has lost when human runs out of tries AND the word is not completely filled out
-	def lost?
-		@tries.zero? && !@user_has_won
+	if game.won?
+		puts "Wahoo! You saved your own life."
+	elsif game.lost?
+		puts "You're hanged. RIP"
+		puts "By the way, the word was #{game.answer}."
 	end
-
-	end
-
-
